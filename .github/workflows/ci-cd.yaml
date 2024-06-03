@@ -38,11 +38,14 @@ jobs:
         with:
           version: 'v1.18.0'
 
+      - name: Ensure .kube directory exists
+        run: mkdir -p $HOME/.kube
+
       - name: Decode and set KUBECONFIG
         run: echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $HOME/.kube/config
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f secret.yaml
-          kubectl apply -f deployment.yaml
-          kubectl apply -f service.yaml
+          kubectl apply -f k8s/secret.yaml
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml

@@ -33,16 +33,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v1
-        with:
-          version: 'v1.18.0'
-
       - name: Ensure .kube directory exists
         run: mkdir -p $HOME/.kube
 
       - name: Decode and set KUBECONFIG
         run: echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $HOME/.kube/config
+
+      - name: Test kubectl connectivity
+        run: kubectl cluster-info
 
       - name: Deploy to Kubernetes
         run: |
